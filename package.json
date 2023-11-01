@@ -43,13 +43,17 @@
     "test": "jest"
   },
   "dependencies": {
+    "@react-native-community/cli-doctor": "^12.0.0",
     "@types/react-native": "^0.72.5",
     "firebase": "^10.5.2",
     "firebase-admin": "^11.11.0",
     "mongoose": "^8.0.0",
     "react": "18.2.0",
     "react-native": "0.72.6",
-    "react-native-cli": "^2.0.1"
+    "react-native-app-auth": "^7.1.0",
+    "react-native-cli": "^2.0.1",
+    "react-native-paper": "^5.11.1",
+    "react-native-vector-icons": "^10.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

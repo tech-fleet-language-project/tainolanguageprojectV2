@@ -12,6 +12,7 @@ import {
 	ProviderId,
 	AuthErrorCodes} from 'firebase/auth';
 import { auth } from "@/firebase.config";
+import { FirebaseError } from 'firebase-admin';
 
 // TODO: code may need to be denormalized
 
@@ -76,7 +77,7 @@ export default class AuthFirebase extends React.Component {
 	// needs to be configed: Google, Faceback, GitHUb, etc. in Firebase
 
   // DRY?!
-	handlePopupProvider = useCallback(async (provider) => {
+	handlePopupProvider = useCallback(async (provider: string) => {
 		if (ProviderId.GOOGLE === provider) {
 			const provider = new GoogleAuthProvider();
 			await signInWithPopup(auth, provider)
@@ -218,7 +219,8 @@ export default class AuthFirebase extends React.Component {
 	[ProviderId]
 	);
 
-	handleCredentialError = (error) => {
+	// TODO: confirm correct interface and admen import
+	handleCredentialError = (error: FirebaseError ) => {
 		if (error.code === AuthErrorCodes.CREDENTIAL_ALREADY_IN_USE) {
 			console.error('Credentials is already in use!');
 			// error message and feedback to user 
