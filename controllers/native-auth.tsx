@@ -1,5 +1,5 @@
-import React, { useState, useCallback, useMemo } from 'react';
-import { Alert } from 'react-native';
+import React, {useState, useCallback, useMemo, FunctionComponent} from 'react';
+import {Alert} from 'react-native';
 import {
   AuthConfiguration,
   RegistrationConfiguration,
@@ -10,8 +10,8 @@ import {
   revoke,
   register,
   logout,
-} from "react-native-app-auth";
-import { default as FirebaseConfig } from "../constants/Firebase";
+} from 'react-native-app-auth';
+import {default as FirebaseConfig} from '../constants/Firebase';
 
 // type State = {
 //     hasLoggedInOnce: boolean,
@@ -39,48 +39,42 @@ import { default as FirebaseConfig } from "../constants/Firebase";
 
 const config: AuthConfiguration = {
   issuer: '',
-	clientId: '',
-	redirectUrl: '',
-	scopes: ['openid', 'profile', 'email', 'offline_access'],
-	additionalParameters: {},
-	connectionTimeoutSeconds: 5,
-	iosPrefersEphemeralSession: false,
-	serviceConfiguration: {
-		authorizationEndpoint: "",
-		tokenEndpoint: "",
-		revocationEndpoint: "",
-		registrationEndpoint: "",
-		endSessionEndpoint: "",
-	},
+  clientId: '',
+  redirectUrl: '',
+  scopes: ['openid', 'profile', 'email', 'offline_access'],
+  additionalParameters: {},
+  connectionTimeoutSeconds: 5,
+  iosPrefersEphemeralSession: false,
+  serviceConfiguration: {
+    authorizationEndpoint: '',
+    tokenEndpoint: '',
+    revocationEndpoint: '',
+    registrationEndpoint: '',
+    endSessionEndpoint: '',
+  },
 };
 
 const registerConfig: RegistrationConfiguration = {
   issuer: '<YOUR_ISSUER_URL>',
-	redirectUrls: ['<YOUR_REDIRECT_URL>', '<YOUR_OTHER_REDIRECT_URL>'],
+  redirectUrls: ['<YOUR_REDIRECT_URL>', '<YOUR_OTHER_REDIRECT_URL>'],
 };
 
-type newAuthorizeResult = AuthorizeResult & { hasLoggedInOnce: boolean };
+type newAuthorizeResult = AuthorizeResult & {hasLoggedInOnce: boolean};
 
+//library or function or attribute or js technique to make immutable
 const resultAuth: newAuthorizeResult = {
   hasLoggedInOnce: false,
-	accessToken: '',
-	accessTokenExpirationDate: '',
-	authorizeAdditionalParameters: {},
-	idToken: '',
-	refreshToken: '',
-	tokenType: "",
-	scopes: [],
-	authorizationCode: "",
-	codeVerifier: "",
+  accessToken: '',
+  accessTokenExpirationDate: '',
+  authorizeAdditionalParameters: {},
+  idToken: '',
+  refreshToken: '',
+  tokenType: '',
+  scopes: [],
+  authorizationCode: '',
+  codeVerifier: '',
 };
 
-React.useEffect(() => {
-  prefetchConfiguration({
-    warmAndPrefetchChrome: true,
-    connectionTimeoutSeconds: 5,
-    ...config,
-  });
-}, []);
 // config
 // This is your configuration object for the client. The config is passed into each of the methods with optional overrides.
 
@@ -121,81 +115,90 @@ React.useEffect(() => {
 
 // State is unnecessary because of AuthorizeResult - decide
 
-export default class AuthNative extends React.Component {
-	// pass only the parameter that the function needs: config***
-	// object vs rest parameter
-	// declaration merge or intersection?
+// pass only the parameter that the function needs: config***
+// object vs rest parameter
+// declaration merge or intersection?
 
-  handleRegistration = useCallback(async () => {
-		try {
+export default function AuthNative() {
+  React.useEffect(() => {
+    prefetchConfiguration({
+      warmAndPrefetchChrome: true,
+      connectionTimeoutSeconds: 5,
+      ...config,
+    });
+  }, []);
+
+  const handleRegistration = useCallback(async () => {
+    try {
       const resultRegister = await register(registerConfig);
-      console.log("User has been registred");
-		} catch (error) {
-			console.error(error);
-		}
-	}, []);
-
-  handleAuthorize = useCallback(async () => {
-    // const resultAuth = await authorize(config);
-		try {
-			const [newResultAuth, setNewResultAuth] = useState<Object>(resultAuth);
-			setNewResultAuth({ ...resultAuth });
-
-			React.useEffect(() => {
-				true;
-			}, []);
-			// export result or if class push state and database to log access
-			console.log('User has been authenticated');
-			return resultAuth;
+      console.log('User has been registered');
     } catch (error) {
-			// setup database to log error
       console.error(error);
     }
   }, []);
 
-  handleRefresh = useCallback(async () => {
-		try {
+  const [newResultAuth, setNewResultAuth] = useState<Object>(resultAuth);
+
+  const handleAuthorize = useCallback(async () => {
+    const resultAuth = await authorize(config);
+    try {
+      setNewResultAuth({...resultAuth});
+
+      // React.useEffect(() => {
+      // 	true;
+      // }, []);
+      // result or if class push state and database to log access
+      console.log('User has been authenticated');
+      return resultAuth;
+    } catch (error) {
+      // setup database to log error
+      console.error(error);
+    }
+  }, []);
+
+  const handleRefresh = useCallback(async () => {
+    try {
       const resultRefresh = await refresh(config, {
         refreshToken: resultAuth.refreshToken,
-			});
-			console.log('User has been revoked');
-		} catch (error) {
-			console.error(error);
-		}
-	}, [resultAuth]);
+      });
+      console.log('User has been refreshed token.');
+    } catch (error) {
+      console.error(error);
+    }
+  }, [resultAuth]);
 
-  handleRovoke = useCallback(async () => {
+  const handleRovoke = useCallback(async () => {
     try {
-			const resultRevoke = await revoke(config, {
-				tokenToRevoke: resultAuth.accessToken || resultAuth.refreshToken,
-				includeBasicAuth: true,
-				sendClientId: true,
-			});
-			console.log("User has been revoked");
-		} catch (error) {
-			console.error(error);
-		}
-	}, [resultAuth]);
+      const resultRevoke = await revoke(config, {
+        tokenToRevoke: resultAuth.accessToken || resultAuth.refreshToken,
+        includeBasicAuth: true,
+        sendClientId: true,
+      });
+      console.log('User has been revoked');
+    } catch (error) {
+      console.error(error);
+    }
+  }, [resultAuth]);
 
   // const handleSignOut = async () => {
   //     try {
-	//     const resultSignOut = await signout(config);
-	//     console.log('User signed out');
-	//     } catch (error) {
-	//     console.error(error);
-	//     }
-	// };
+  //     const resultSignOut = await signout(config);
+  //     console.log('User signed out');
+  //     } catch (error) {
+  //     console.error(error);
+  //     }
+  // };
 
-	handleLogOut = useCallback(async () => {
-		try {
-			const resultLogOut = await logout(config, {
-				idToken: resultAuth.idToken,
-				postLogoutRedirectUrl:
-          "send user back to home if not done automatically conditional statement",
-			});
-			console.log("User signed out");
-		} catch (error) {
-			console.error(error);
-		}
-	}, [resultAuth]);
-} // end of class
+  const handleLogOut = useCallback(async () => {
+    try {
+      const resultLogOut = await logout(config, {
+        idToken: resultAuth.idToken,
+        postLogoutRedirectUrl:
+          'send user back to home if not done automatically conditional statement',
+      });
+      console.log('User signed out');
+    } catch (error) {
+      console.error(error);
+    }
+  }, [resultAuth]);
+}

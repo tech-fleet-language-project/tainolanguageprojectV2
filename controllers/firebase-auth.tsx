@@ -11,7 +11,7 @@ import {
 	onAuthStateChanged,
 	ProviderId,
 	AuthErrorCodes} from 'firebase/auth';
-import { auth } from "@/firebase.config";
+import { auth } from "@/controllers/firebase.init";
 import { FirebaseError } from 'firebase-admin';
 
 // TODO: code may need to be denormalized

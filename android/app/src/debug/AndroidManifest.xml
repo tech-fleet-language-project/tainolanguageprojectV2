@@ -8,6 +8,24 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="28"
         tools:ignore="GoogleAppIndexingWarning">
+        <!-- writtten in an attempt to address <appAuthRedirectScheme> not provided issue -->
         <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" android:exported="false" />
+        <activity android:name="net.openid.appauth.RedirectUriReceiverActivity" android:exported="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.action.DEFAULT" />
+                <category android:name="android.intent.action.BROWSABLE" />
+                <data android:host="appauth.demo-app.io"
+                    android.path="/oauth2redirect"
+                    android.schema="https" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.action.DEFAULT" />
+                <category android:name="android.intent.action.BROWSABLE" />
+                <data android.schema="net.openid.appauthdemo" />
+            </intent-filter>
+        </activity>
+       
     </application>
 </manifest>
