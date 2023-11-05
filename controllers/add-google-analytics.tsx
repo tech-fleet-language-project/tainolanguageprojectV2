@@ -1,6 +1,6 @@
 import getAccessToken from './get-token';
-import { PROJECT_ID } from '@/constants/Firebase';
-import analyticsAccountId from '@/constants/Firebase';
+import { PROJECT_ID } from '../constants/Firebase';
+import analyticsAccountId from '/constants/Firebase';
 
 const fetch = require('node-fetch');
 

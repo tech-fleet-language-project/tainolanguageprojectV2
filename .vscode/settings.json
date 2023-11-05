@@ -22,6 +22,7 @@
     "firebaseapp",
     "firebaseconfig",
     "firestore",
+    "Signup",
     "tainolanguagueproject"
   ],
   "java.compile.nullAnalysis.mode": "automatic",

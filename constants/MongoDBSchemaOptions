@@ -6,5 +6,5 @@ module.exports = {
     id: true,
     _id: true,
     minimize: true,
-    
+    heartbeatFrequencyMS: 1000
 }
