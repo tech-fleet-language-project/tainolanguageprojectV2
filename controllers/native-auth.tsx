@@ -75,6 +75,15 @@ const resultAuth: newAuthorizeResult = {
   codeVerifier: '',
 };
 
+
+React.useEffect(() => {
+  prefetchConfiguration({
+    warmAndPrefetchChrome: true,
+    connectionTimeoutSeconds: 5,
+    ...config,
+  });
+})
+
 // config
 // This is your configuration object for the client. The config is passed into each of the methods with optional overrides.
 
@@ -119,34 +128,25 @@ const resultAuth: newAuthorizeResult = {
 // object vs rest parameter
 // declaration merge or intersection?
 
-export default function AuthNative() {
-  React.useEffect(() => {
-    prefetchConfiguration({
-      warmAndPrefetchChrome: true,
-      connectionTimeoutSeconds: 5,
-      ...config,
-    });
-  }, []);
+export default class authNative extends React.Component {
+  
 
-  const handleRegistration = useCallback(async () => {
+ handleRegistration = async () => {
     try {
       const resultRegister = await register(registerConfig);
       console.log('User has been registered');
     } catch (error) {
       console.error(error);
     }
-  }, []);
+  }
 
-  const [newResultAuth, setNewResultAuth] = useState<Object>(resultAuth);
+  // const [newResultAuth, setNewResultAuth] = useState<Object>(resultAuth);
 
-  const handleAuthorize = useCallback(async () => {
-    const resultAuth = await authorize(config);
+ handleAuthorize = async () => {
     try {
-      setNewResultAuth({...resultAuth});
-
-      // React.useEffect(() => {
-      // 	true;
-      // }, []);
+      // setNewResultAuth({...resultAuth});
+      const resultAuth = await authorize(config);
+     
       // result or if class push state and database to log access
       console.log('User has been authenticated');
       return resultAuth;
@@ -154,9 +154,9 @@ export default function AuthNative() {
       // setup database to log error
       console.error(error);
     }
-  }, []);
+  }
 
-  const handleRefresh = useCallback(async () => {
+ handleRefresh = async () => {
     try {
       const resultRefresh = await refresh(config, {
         refreshToken: resultAuth.refreshToken,
@@ -165,9 +165,9 @@ export default function AuthNative() {
     } catch (error) {
       console.error(error);
     }
-  }, [resultAuth]);
+  }
 
-  const handleRovoke = useCallback(async () => {
+ handleRovoke = async () => {
     try {
       const resultRevoke = await revoke(config, {
         tokenToRevoke: resultAuth.accessToken || resultAuth.refreshToken,
@@ -178,7 +178,7 @@ export default function AuthNative() {
     } catch (error) {
       console.error(error);
     }
-  }, [resultAuth]);
+  }
 
   // const handleSignOut = async () => {
   //     try {
@@ -189,7 +189,7 @@ export default function AuthNative() {
   //     }
   // };
 
-  const handleLogOut = useCallback(async () => {
+ handleLogOut = async () => {
     try {
       const resultLogOut = await logout(config, {
         idToken: resultAuth.idToken,
@@ -200,5 +200,5 @@ export default function AuthNative() {
     } catch (error) {
       console.error(error);
     }
-  }, [resultAuth]);
+  }
 }

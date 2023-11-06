@@ -13,11 +13,12 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
 } from 'react-native';
-import AuthNative from '../controllers/native-auth';
-import {handleLoginFirebase} from '../controllers/firebase-auth';
-import {signInWithEmailAndPassword} from 'firebase/auth';
-import auth from '@react-native-firebase/auth';
+import authNative from '../controllers/native-auth';
+import firebaseAuth from '../controllers/firebase-auth';
+import {signInWithEmailAndPassword, createUserWithEmailAndPassword,  getAuth} from 'firebase/auth';
 import {auth as firebaseInitialize} from '../controllers/firebase.init';
+// import auth from '@react-native-firebase/auth';
+
 
 /**
  * log-in in to the application
@@ -32,6 +33,9 @@ import {auth as firebaseInitialize} from '../controllers/firebase.init';
 
 export default function login() {
   // redundant but I want to remind me of other way to implement type safety
+
+  const firebase = new firebaseAuth({});
+
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [passwordVisibility, setPasswordVisibility] = useState<boolean>(true);
@@ -48,13 +52,21 @@ export default function login() {
     }
   };
 
+  
   const onLogin = async () => {
     try {
       if (email !== '' && password !== '') {
-        await handleLoginFirebase(email, password);
-        // firebaseInitialize
+        await firebase.handleLoginFirebase(email, password).then(user => {
+          console.log(user);
+        });
+        // await signInWithEmailAndPassword(auth, email, password).then(
+        //   userCredential => {
+        //     const {user} = userCredential;
+        //     console.log(userCredential);
+        //     // pass data to database: implement function in other file SOC
+        //   },
+        // );
         // alternative method with react-native-firebase/auth library
-        // auth().signInWithEmailAndPassword(email, password);
         console.log('handleLoginFirebase produced no errors.');
       } else {
         if (email === '' && password === '') {
@@ -87,39 +99,39 @@ export default function login() {
     <KeyboardAvoidingView
       style={styles.container}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View style={styles.imageView}>
-          <Image
-            style={styles.image}
-            source={require('../assets/images/taino_art.jpg')}
-            resizeMethod="scale"
-            height={200}
-            width={200}
-          />
-        </View>
-        <View style={styles.inputView}>
-          <TextInput
-            style={styles.inputText}
-            value={email}
-            placeholder="Email"
-            placeholderTextColor="#AFAFAF"
-            onChangeText={email => {
-              return setEmail(email);
-            }}
-          />
-        </View>
-        <View style={styles.inputView}>
-          <TextInput
-            style={styles.inputText}
-            value={password}
-            placeholder="Password"
-            placeholderTextColor="#AFAFAF"
-            onChangeText={password => {
-              return setPassword(password);
-            }}
-          />
-        </View>
-        <View>
+      <View style={styles.imageView}>
+        <Image
+          style={styles.image}
+          source={require('../assets/images/taino_art.jpg')}
+          resizeMethod="scale"
+          height={200}
+          width={200}
+        />
+      </View>
+      <View style={styles.inputView}>
+        <TextInput
+          style={styles.inputText}
+          value={email}
+          placeholder="Email"
+          placeholderTextColor="#AFAFAF"
+          onChangeText={email => {
+            return setEmail(email);
+          }}
+        />
+      </View>
+      <View style={styles.inputView}>
+        <TextInput
+          style={styles.inputText}
+          value={password}
+          placeholder="Password"
+          placeholderTextColor="#AFAFAF"
+          onChangeText={password => {
+            return setPassword(password);
+          }}
+        />
+      </View>
+      <View>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <TouchableOpacity>
             <Button
               title="Login"
@@ -128,11 +140,11 @@ export default function login() {
               onPress={onLogin}
             />
           </TouchableOpacity>
-          <TouchableOpacity>
-            <Text>Forget Password?</Text>
-          </TouchableOpacity>
-        </View>
-      </TouchableWithoutFeedback>
+        </TouchableWithoutFeedback>
+        <TouchableOpacity>
+          <Text>Forget Password?</Text>
+        </TouchableOpacity>
+      </View>
     </KeyboardAvoidingView>
   );
 }

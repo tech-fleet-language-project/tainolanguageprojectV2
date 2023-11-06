@@ -68,6 +68,6 @@ export const auth = getAuth(fireApp);
 // export const auth = initializeAuth(fireApp, {
 //   persistence: getReactNativePersistence(ReactNativeAsyncStorage),
 // });
-connectAuthEmulator(auth, "http://127.0.0.1:9099");
+connectAuthEmulator(auth, "http://10.0.2.2:9099");
 export const analytics = getAnalytics(fireApp);
 export const database = getFirestore(fireApp);
