@@ -4,18 +4,35 @@ import {
 	useColorScheme,
 	View as DefaultView,
 	Modal as DefaultModal,
+  StyleProp,
+  TextStyle,
+  ViewProps,
+  ImageStyle,
 } from 'react-native';
 
 import Colors from '../constants/Colors';
+import { ViewStyle } from 'react-native';
 
-type ThemeProps = {
+export type themeprops = {
   lightColor?: string;
   darkColor?: string;
 };
 
-export type TextProps = ThemeProps & DefaultText['props'];
-export type ViewProps = ThemeProps & DefaultView['props'];
-export type ModalProps = ThemeProps & DefaultModal['props'];
+export type textstyle = {
+  style?: StyleProp<TextStyle>
+}
+
+export type viewstyle = {
+  style?: StyleProp<ViewStyle>
+}
+
+export type modalstyle = {
+  style?: StyleProp<ImageStyle & TextStyle>
+}
+
+export type textprops = themeprops & DefaultText['props'];
+export type viewprops = themeprops & DefaultView['props'];
+export type modalprops = themeprops & DefaultModal['props'];
 
 export function useThemeColor(
   props: { light?: string; dark?: string },
@@ -30,14 +47,14 @@ export function useThemeColor(
   return Colors[theme][colorName];
 }
 
-export function Text(props: TextProps) {
+export function Text(props: textprops) {
   const { style, lightColor, darkColor, ...otherProps } = props;
   const color = useThemeColor({ light: lightColor, dark: darkColor }, 'text');
 
 	return <DefaultText style={[{ color }, style]} {...otherProps} />;
 }
 
-export function View(props: ViewProps) {
+export function View(props: viewprops) {
   const { style, lightColor, darkColor, ...otherProps } = props;
   const backgroundColor = useThemeColor(
 		{ light: lightColor, dark: darkColor },
@@ -47,7 +64,7 @@ export function View(props: ViewProps) {
 	return <DefaultView style={[{ backgroundColor }, style]} {...otherProps} />;
 }
 
-export function Modal(props: ViewProps) {
+export function Modal(props: viewprops) {
   const { style, lightColor, darkColor, ...otherProps } = props;
   const backgroundColor = useThemeColor(
 		{ light: lightColor, dark: darkColor },

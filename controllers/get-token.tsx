@@ -5,10 +5,10 @@ export default function getAccessToken() {
   return admin.credential
 		.applicationDefault()
 		.getAccessToken()
-    .then((accessToken) => {
+    .then((accessToken: { access_token: string; }) => {
 			return accessToken.access_token;
 		})
-		.catch((error) => {
+		.catch((error: string) => {
 			console.error('Unable to get access token');
 			console.error(error);
 		});

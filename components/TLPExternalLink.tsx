@@ -1,6 +1,6 @@
 // import { Link } from 'expo-router';
 // import * as WebBrowser from 'expo-web-browser';
-import React from 'react';
+import React, { EventHandler } from 'react';
 import {
   Platform,
   TouchableOpacity,
@@ -8,6 +8,7 @@ import {
   Text,
   Linking,
   TextProps,
+  GestureResponderEvent
 } from 'react-native';
 
 // use Themed.tsx and StyledText.tsx text: if it will be the same throughout the program or override properties
@@ -38,14 +39,14 @@ import {
 
 export function ExternalLink(props: {
   href: string;
-  text: TextProps;
+  text: string;
   style?: {} | Object | undefined;
 }) {
   const {href, text, style = {}} = props;
 
-  const onPress = (e: any) => {
+  const onPress = (event: GestureResponderEvent) => {
     if (Platform.OS !== 'web') {
-      e.preventDefault();
+      event.preventDefault();
       Linking.canOpenURL(href).then(() => {
         Linking.openURL(href);
       });

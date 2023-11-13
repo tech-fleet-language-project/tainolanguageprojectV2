@@ -1,5 +1,5 @@
-import React, { useState, useCallback, useMemo } from 'react';
-import { Alert } from 'react-native';
+import React, {useState, useCallback, useMemo} from 'react';
+import {Alert} from 'react-native';
 import {
   AuthConfiguration,
   RegistrationConfiguration,
@@ -10,9 +10,9 @@ import {
   revoke,
   register,
   logout,
-} from "react-native-app-auth";
-import { default as FirebaseConfig } from "../constants/Firebase";
-
+} from 'react-native-app-auth';
+import {default as DiscoverDocument } from '../constants/config/Discovery_Document.json'
+import {default as ServiceAccount} from '../constants/config/Service_Account.json'
 // type State = {
 //     hasLoggedInOnce: boolean,
 //     accessToken?: string,
@@ -38,40 +38,50 @@ import { default as FirebaseConfig } from "../constants/Firebase";
 // codeVerifier - (string) the codeVerifier value used for the PKCE exchange (only if both skipCodeExchange=true and usePKCE=true)
 
 const config: AuthConfiguration = {
-  issuer: '',
-	clientId: '',
-	redirectUrl: '',
-	scopes: ['openid', 'profile', 'email', 'offline_access'],
-	additionalParameters: {},
-	connectionTimeoutSeconds: 5,
-	iosPrefersEphemeralSession: false,
-	serviceConfiguration: {
-		authorizationEndpoint: "",
-		tokenEndpoint: "",
-		revocationEndpoint: "",
-		registrationEndpoint: "",
-		endSessionEndpoint: "",
-	},
+  issuer: DiscoverDocument.issuer,
+  clientId: ServiceAccount.client_id,
+  redirectUrl: '',
+  scopes: ['openid', 'profile', 'email', 'offline_access'], // no offline_access for server version 
+  additionalParameters: {},
+  connectionTimeoutSeconds: 5,
+  iosPrefersEphemeralSession: false,
+  serviceConfiguration: {
+    authorizationEndpoint: DiscoverDocument.authorization_endpoint,
+    tokenEndpoint: DiscoverDocument.token_endpoint,
+    revocationEndpoint: DiscoverDocument.revocation_endpoint,
+    registrationEndpoint: '',
+    endSessionEndpoint: '',
+  },
 };
+// serviceConfiguration configured to save on round trip or allow for discovery?
+// issuer: 'https://accounts.google.com',
+// clientId: 'GOOGLE_OAUTH_APP_GUID.apps.googleusercontent.com',
+// redirectUrl: 'com.googleusercontent.apps.GOOGLE_OAUTH_APP_GUID:/oauth2redirect/google', // needs to be configured in client's API Console
+
+
+
+
 
 const registerConfig: RegistrationConfiguration = {
-  issuer: '<YOUR_ISSUER_URL>',
-	redirectUrls: ['<YOUR_REDIRECT_URL>', '<YOUR_OTHER_REDIRECT_URL>'],
+  issuer: DiscoverDocument.issuer,
+  redirectUrls: ['<YOUR_REDIRECT_URL>', '<YOUR_OTHER_REDIRECT_URL>'],
 };
 
-type newAuthorizeResult = AuthorizeResult & { hasLoggedInOnce: boolean };
+type newAuthorizeResult = AuthorizeResult & {hasLoggedInOnce: boolean};
 
+// library or function or attribute or js technique to make immutable and persistent state
+// or maybe not, it may need to change on new request and is only needed once 
 const resultAuth: newAuthorizeResult = {
   hasLoggedInOnce: false,
-	accessToken: '',
-	accessTokenExpirationDate: '',
-	authorizeAdditionalParameters: {},
-	idToken: '',
-	refreshToken: '',
-	tokenType: "",
-	scopes: [],
-	authorizationCode: "",
-	codeVerifier: "",
+  accessToken: '',
+  accessTokenExpirationDate: '',
+  authorizeAdditionalParameters: {},
+  idToken: '',
+  refreshToken: '',
+  tokenType: '',
+  scopes: [],
+  authorizationCode: '',
+  codeVerifier: '',
 };
 
 React.useEffect(() => {
@@ -80,7 +90,8 @@ React.useEffect(() => {
     connectionTimeoutSeconds: 5,
     ...config,
   });
-}, []);
+});
+
 // config
 // This is your configuration object for the client. The config is passed into each of the methods with optional overrides.
 
@@ -121,81 +132,79 @@ React.useEffect(() => {
 
 // State is unnecessary because of AuthorizeResult - decide
 
-export default class AuthNative extends React.Component {
-	// pass only the parameter that the function needs: config***
-	// object vs rest parameter
-	// declaration merge or intersection?
+// pass only the parameter that the function needs: config***
+// object vs rest parameter
+// declaration merge or intersection?
 
-  handleRegistration = useCallback(async () => {
-		try {
+export default class authNative extends React.Component {
+  handleRegistration = async () => {
+    try {
       const resultRegister = await register(registerConfig);
-      console.log("User has been registred");
-		} catch (error) {
-			console.error(error);
-		}
-	}, []);
-
-  handleAuthorize = useCallback(async () => {
-    // const resultAuth = await authorize(config);
-		try {
-			const [newResultAuth, setNewResultAuth] = useState<Object>(resultAuth);
-			setNewResultAuth({ ...resultAuth });
-
-			React.useEffect(() => {
-				true;
-			}, []);
-			// export result or if class push state and database to log access
-			console.log('User has been authenticated');
-			return resultAuth;
+      console.log('User has been registered');
     } catch (error) {
-			// setup database to log error
       console.error(error);
     }
-  }, []);
+  };
 
-  handleRefresh = useCallback(async () => {
-		try {
+  // const [newResultAuth, setNewResultAuth] = useState<Object>(resultAuth);
+
+  handleAuthorize = async () => {
+    try {
+      // setNewResultAuth({...resultAuth});
+      const resultAuth = await authorize(config);
+
+      // result or if class push state and database to log access
+      console.log('User has been authenticated');
+      return resultAuth;
+    } catch (error) {
+      // setup database to log error
+      console.error(error);
+    }
+  };
+
+  handleRefresh = async () => {
+    try {
       const resultRefresh = await refresh(config, {
         refreshToken: resultAuth.refreshToken,
-			});
-			console.log('User has been revoked');
-		} catch (error) {
-			console.error(error);
-		}
-	}, [resultAuth]);
+      });
+      console.log('User has been refreshed token.');
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-  handleRovoke = useCallback(async () => {
+  handleRevoke = async () => {
     try {
-			const resultRevoke = await revoke(config, {
-				tokenToRevoke: resultAuth.accessToken || resultAuth.refreshToken,
-				includeBasicAuth: true,
-				sendClientId: true,
-			});
-			console.log("User has been revoked");
-		} catch (error) {
-			console.error(error);
-		}
-	}, [resultAuth]);
+      const resultRevoke = await revoke(config, {
+        tokenToRevoke: resultAuth.accessToken || resultAuth.refreshToken,
+        includeBasicAuth: true,
+        sendClientId: true,
+      });
+      console.log('User has been revoked');
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   // const handleSignOut = async () => {
   //     try {
-	//     const resultSignOut = await signout(config);
-	//     console.log('User signed out');
-	//     } catch (error) {
-	//     console.error(error);
-	//     }
-	// };
+  //     const resultSignOut = await signout(config);
+  //     console.log('User signed out');
+  //     } catch (error) {
+  //     console.error(error);
+  //     }
+  // };
 
-	handleLogOut = useCallback(async () => {
-		try {
-			const resultLogOut = await logout(config, {
-				idToken: resultAuth.idToken,
-				postLogoutRedirectUrl:
-          "send user back to home if not done automatically conditional statement",
-			});
-			console.log("User signed out");
-		} catch (error) {
-			console.error(error);
-		}
-	}, [resultAuth]);
-} // end of class
+  handleLogOut = async () => {
+    try {
+      const resultLogOut = await logout(config, {
+        idToken: resultAuth.idToken,
+        postLogoutRedirectUrl:
+          'send user back to home if not done automatically conditional statement',
+      });
+      console.log('User signed out');
+    } catch (error) {
+      console.error(error);
+    }
+  };
+}

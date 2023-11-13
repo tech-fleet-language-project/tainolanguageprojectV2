@@ -9,7 +9,7 @@
     "jsx": "react-native",
     "noEmit": true,
     "strict": true,
-    "noImplicitAny": true,
+    "noImplicitAny": false,
     "strictNullChecks": true,
     "noImplicitThis": true,
     "alwaysStrict": true,
@@ -49,11 +49,11 @@
   "exclude": [
     "node_modules",
     "babel.config.js",
-    ".babel.rc",
     "metro.config.js",
     "jest.config.js",
     "eslintrc.js",
-    "prettierrc.js" 
+    "prettierrc.js",
+    "rn-cli.config.js"
   ],
   "extends": "@tsconfig/react-native/tsconfig.json"
 }
