@@ -1,4 +1,4 @@
-import { PROJECT_ID } from '../constants/Firebase';
+import {PROJECT_ID} from '../constants/config/Firebase';
 import getAccessToken from '../controllers/get-token';
 
 const fetch = require('node-fetch');
@@ -6,7 +6,7 @@ const fetch = require('node-fetch');
 // programmatically add Firebase to project
 export default async function addFirebase() {
   const accessToken = getAccessToken();
-	const uri =
+  const uri =
     'https://firebase.googleapis.com/v1beta1/projects/' +
     PROJECT_ID +
     ':addFirebase';
@@ -15,15 +15,15 @@ export default async function addFirebase() {
     // use a manual access token here since explicit user access token is required.
     headers: {
       Authorization: `Bearer ${accessToken}`,
-		},
+    },
   };
 
-	try {
-		const rawResponse = await fetch(uri, options);
-		const resp = await rawResponse.json();
-		// log response and error in database
+  try {
+    const rawResponse = await fetch(uri, options);
+    const resp = await rawResponse.json();
+    // log response and error in database
     console.log(resp);
-	} catch (error) {
+  } catch (error) {
     console.error(error);
   }
 }

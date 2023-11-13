@@ -18,7 +18,8 @@ import Alert from 'react-native';
 import {FirebaseError} from 'firebase/app';
 import next from 'next';
 
-// TODO: code may need to be normalized
+// TODO: code may need to be 
+// TODO: use firebase admin library after creating server for app along with revise file structure
 
 export default class firebaseAuth extends React.Component {
   // sign up new user
@@ -60,7 +61,7 @@ export default class firebaseAuth extends React.Component {
   };
 
   // confirm login of user
-  handleConfirmLogin = async () => {
+  handleConfirmLoginFirebase = async () => {
     return await onAuthStateChanged(auth, user => {
       if (user) {
         // user is signed in, see docs for a list of available properties
@@ -78,7 +79,7 @@ export default class firebaseAuth extends React.Component {
   // needs to be configed: Google, Faceback, GitHUb, etc. in Firebase
 
   // DRY?!
-  handlePopupProvider = async (provider: string) => {
+  handlePopupProviderFirebase = async (provider: string) => {
     if (ProviderId.GOOGLE === provider) {
       const provider = new GoogleAuthProvider();
       await signInWithPopup(auth, provider)

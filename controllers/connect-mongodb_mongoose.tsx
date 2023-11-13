@@ -10,7 +10,7 @@ export default async function connectMongoDB() {
 			sslValidate: false,
 		})
 		.then(console.log("Successful connected to MongoDB."))
-		.catch((error: string) => {
+		.catch((error: any) => {
 			console.error("Unsuccessful in connecting to MongoDb.", error);
 		});
 }

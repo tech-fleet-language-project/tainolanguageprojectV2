@@ -12,7 +12,7 @@ import {
   Platform,
   Keyboard,
 } from 'react-native';
-import {handleSignupFirebase} from '../controllers/firebase-auth';
+import firebaseAuth from '../controllers/firebase-auth';
 
 /**
  * sign-up to the application
@@ -22,7 +22,7 @@ import {handleSignupFirebase} from '../controllers/firebase-auth';
  * @param {string} lname - last name of user
  * @param {string} pnumber - phone number of user
  * @returns {JSX.Element}
- * @constructor
+ * @function
  */
 
 // uninstall some of the dependencies in package.json
@@ -31,6 +31,8 @@ import {handleSignupFirebase} from '../controllers/firebase-auth';
 
 export default function signup() {
   // redundant but I want to remind me of other way to implement type safety
+  const firebase = new firebaseAuth({});
+
   const [fname, setFName] = useState<string>('');
   const [lname, setLName] = useState<string>('');
   const [pnumber, setPNumber] = useState<string>('');
@@ -56,12 +58,18 @@ export default function signup() {
   const onSignup = async () => {
     try {
       if (email !== '' && password !== '') {
-        await handleSignupFirebase(email, password);
+        await firebase.handleSignupFirebase(email, password)
+        .then(user => {
+          console.log(user);
+        })
+        .catch(error => {
+          console.log('Firebase failed to produce user credentials.');
+        });
       } else {
         // redirect to home screen?
       }
     } catch (error) {
-      console.error('User Failed to Login', error);
+      console.error('User Failed to Sign-in', error);
     }
   };
 

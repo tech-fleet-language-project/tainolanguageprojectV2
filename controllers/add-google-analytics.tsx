@@ -1,6 +1,6 @@
 import getAccessToken from './get-token';
-import { PROJECT_ID } from '../constants/Firebase';
-import analyticsAccountId from '/constants/Firebase';
+import {PROJECT_ID} from '../constants/config/Firebase';
+import analyticsAccountId from '../constants/config/Firebase';
 
 const fetch = require('node-fetch');
 
@@ -14,18 +14,18 @@ export default async function addGoogleAnalytics() {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${accessToken}`,
-		},
+    },
     // TODO: find analyticsAccountId
     body: JSON.stringify({
       analyticsAccountId,
-		}),
+    }),
   };
 
-	try {
-		const rawResponse = await fetch(uri, options);
-		const resp = await rawResponse.json();
-		console.log(resp);
-	} catch (error) {
+  try {
+    const rawResponse = await fetch(uri, options);
+    const resp = await rawResponse.json();
+    console.log(resp);
+  } catch (error) {
     console.error(error);
   }
 }

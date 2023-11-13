@@ -12,7 +12,7 @@ import {
 type modalprops = {
     animationType: string,
     visible: boolean,
-    onRequestClose: Function,
+    onRequestClose: boolean,
     transparent: boolean,
     modalImage: string,
     modalText: string,
@@ -36,11 +36,12 @@ export default function TLPModal (modalProps) {
     style={styles.modalContainer}
     animationType = {animationType}
     visible = {visible}
-    onRequestClose = {() = setModalVisible(!mobalVisible)}
+    onRequestClose = {onRequestClose => setModalVisible(!mobalVisible)}
     transparent = {transparent}
-    {children}
+    
+   
 
-    >{children}
+    >
     </Modal>
     
   )

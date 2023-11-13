@@ -1,4 +1,4 @@
-import React, {useState, useCallback, useMemo, FunctionComponent} from 'react';
+import React, {useState, useCallback, useMemo} from 'react';
 import {Alert} from 'react-native';
 import {
   AuthConfiguration,
@@ -11,8 +11,8 @@ import {
   register,
   logout,
 } from 'react-native-app-auth';
-import {default as FirebaseConfig} from '../constants/Firebase';
-
+import {default as DiscoverDocument } from '../constants/config/Discovery_Document.json'
+import {default as ServiceAccount} from '../constants/config/Service_Account.json'
 // type State = {
 //     hasLoggedInOnce: boolean,
 //     accessToken?: string,
@@ -38,30 +38,39 @@ import {default as FirebaseConfig} from '../constants/Firebase';
 // codeVerifier - (string) the codeVerifier value used for the PKCE exchange (only if both skipCodeExchange=true and usePKCE=true)
 
 const config: AuthConfiguration = {
-  issuer: '',
-  clientId: '',
+  issuer: DiscoverDocument.issuer,
+  clientId: ServiceAccount.client_id,
   redirectUrl: '',
-  scopes: ['openid', 'profile', 'email', 'offline_access'],
+  scopes: ['openid', 'profile', 'email', 'offline_access'], // no offline_access for server version 
   additionalParameters: {},
   connectionTimeoutSeconds: 5,
   iosPrefersEphemeralSession: false,
   serviceConfiguration: {
-    authorizationEndpoint: '',
-    tokenEndpoint: '',
-    revocationEndpoint: '',
+    authorizationEndpoint: DiscoverDocument.authorization_endpoint,
+    tokenEndpoint: DiscoverDocument.token_endpoint,
+    revocationEndpoint: DiscoverDocument.revocation_endpoint,
     registrationEndpoint: '',
     endSessionEndpoint: '',
   },
 };
+// serviceConfiguration configured to save on round trip or allow for discovery?
+// issuer: 'https://accounts.google.com',
+// clientId: 'GOOGLE_OAUTH_APP_GUID.apps.googleusercontent.com',
+// redirectUrl: 'com.googleusercontent.apps.GOOGLE_OAUTH_APP_GUID:/oauth2redirect/google', // needs to be configured in client's API Console
+
+
+
+
 
 const registerConfig: RegistrationConfiguration = {
-  issuer: '<YOUR_ISSUER_URL>',
+  issuer: DiscoverDocument.issuer,
   redirectUrls: ['<YOUR_REDIRECT_URL>', '<YOUR_OTHER_REDIRECT_URL>'],
 };
 
 type newAuthorizeResult = AuthorizeResult & {hasLoggedInOnce: boolean};
 
-//library or function or attribute or js technique to make immutable
+// library or function or attribute or js technique to make immutable and persistent state
+// or maybe not, it may need to change on new request and is only needed once 
 const resultAuth: newAuthorizeResult = {
   hasLoggedInOnce: false,
   accessToken: '',
@@ -75,14 +84,13 @@ const resultAuth: newAuthorizeResult = {
   codeVerifier: '',
 };
 
-
 React.useEffect(() => {
   prefetchConfiguration({
     warmAndPrefetchChrome: true,
     connectionTimeoutSeconds: 5,
     ...config,
   });
-})
+});
 
 // config
 // This is your configuration object for the client. The config is passed into each of the methods with optional overrides.
@@ -129,24 +137,22 @@ React.useEffect(() => {
 // declaration merge or intersection?
 
 export default class authNative extends React.Component {
-  
-
- handleRegistration = async () => {
+  handleRegistration = async () => {
     try {
       const resultRegister = await register(registerConfig);
       console.log('User has been registered');
     } catch (error) {
       console.error(error);
     }
-  }
+  };
 
   // const [newResultAuth, setNewResultAuth] = useState<Object>(resultAuth);
 
- handleAuthorize = async () => {
+  handleAuthorize = async () => {
     try {
       // setNewResultAuth({...resultAuth});
       const resultAuth = await authorize(config);
-     
+
       // result or if class push state and database to log access
       console.log('User has been authenticated');
       return resultAuth;
@@ -154,9 +160,9 @@ export default class authNative extends React.Component {
       // setup database to log error
       console.error(error);
     }
-  }
+  };
 
- handleRefresh = async () => {
+  handleRefresh = async () => {
     try {
       const resultRefresh = await refresh(config, {
         refreshToken: resultAuth.refreshToken,
@@ -165,9 +171,9 @@ export default class authNative extends React.Component {
     } catch (error) {
       console.error(error);
     }
-  }
+  };
 
- handleRovoke = async () => {
+  handleRevoke = async () => {
     try {
       const resultRevoke = await revoke(config, {
         tokenToRevoke: resultAuth.accessToken || resultAuth.refreshToken,
@@ -178,7 +184,7 @@ export default class authNative extends React.Component {
     } catch (error) {
       console.error(error);
     }
-  }
+  };
 
   // const handleSignOut = async () => {
   //     try {
@@ -189,7 +195,7 @@ export default class authNative extends React.Component {
   //     }
   // };
 
- handleLogOut = async () => {
+  handleLogOut = async () => {
     try {
       const resultLogOut = await logout(config, {
         idToken: resultAuth.idToken,
@@ -200,5 +206,5 @@ export default class authNative extends React.Component {
     } catch (error) {
       console.error(error);
     }
-  }
+  };
 }

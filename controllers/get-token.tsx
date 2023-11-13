@@ -1,5 +1,3 @@
-import { StringExpressionOperatorReturningArray } from "mongoose";
-
 const admin = require('firebase-admin');
 // import admin from 'firebase-admin';
 

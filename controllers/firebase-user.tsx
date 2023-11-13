@@ -1,17 +1,17 @@
-import {UserInfo} from 'firebase/auth';
+import {User} from 'firebase/auth'
 import {auth} from './firebase.init';
 
 // generate user profile data for settings, workers, and other purposes
 
-type userinfo = {
-  displayname: string;
-  email: string;
-  photoUrl: string;
-  phoneNumber: string;
-  emailVerified: string;
-};
+// type userinfo = {
+//   displayname: string;
+//   email: string;
+//   photoUrl: string;
+//   phoneNumber: string;
+//   emailVerified: string;
+// };
 
-const user = auth.currentUser;
+const user: User | null = auth.currentUser;
 
 export default function handleUserProfile() {
   try {
@@ -22,9 +22,9 @@ export default function handleUserProfile() {
       const photoURL = user.photoURL;
       const emailVerified = user.emailVerified;
 
-      // the user's ID, unique to the Firebase project. Do NOT use
+      // the user's ID, unique to the Firebase project...do NOT use
       // this value to authenticate with your backend server, if
-      // you have one. Use User.getToken() instead.
+      // you have one...use User.getToken() instead.
       const uid = user.uid;
       console.log('User profile is provided');
     }

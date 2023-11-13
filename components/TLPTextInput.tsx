@@ -25,7 +25,7 @@ export default function TLPTextInput(textInputProps) {
     value = textInputProps.value,
     placeholder = textInputProps.placeholder,
     placeholderTextColor = textInputProps.placeholderTextColor || '#AFAFA',
-    passwordIndicator = textInputProps.passwordIndicator || true,
+    passwordIndicator = textInputProps.passwordIndicator || false,
     onPress = textInputProps.onPress,
     onChangeText = textInputProps.onChangeText,
     keyboardType = textInputProps.keyboardType || 'default',
@@ -63,6 +63,16 @@ export default function TLPTextInput(textInputProps) {
     </View>
   );
 }
+
+TLPTextInput.defaultProps = {
+  placeholder: 'placeholder',
+  placeholderTextColor: '#AFAFA',
+  passwordIndicator: false,
+  keyboardType: 'default',
+  secureTextEntry: false,
+  eyeIcon: false
+}
+
 
 const styles = StyleSheet.create({
   textInputContainer: {

@@ -15,17 +15,20 @@ import {
 } from 'react-native';
 import authNative from '../controllers/native-auth';
 import firebaseAuth from '../controllers/firebase-auth';
-import {signInWithEmailAndPassword, createUserWithEmailAndPassword,  getAuth} from 'firebase/auth';
+import {
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  getAuth,
+} from 'firebase/auth';
 import {auth as firebaseInitialize} from '../controllers/firebase.init';
 // import auth from '@react-native-firebase/auth';
-
 
 /**
  * log-in in to the application
  * @param {string} email - email of user
  * @param {string} password - password of user
  * @returns {JSX.Element}
- * @constructor
+ * @function
  */
 
 // uninstall some of the dependencies in package.json
@@ -52,13 +55,18 @@ export default function login() {
     }
   };
 
-  
   const onLogin = async () => {
     try {
       if (email !== '' && password !== '') {
-        await firebase.handleLoginFirebase(email, password).then(user => {
-          console.log(user);
-        });
+        await firebase
+          .handleLoginFirebase(email, password)
+          .then(user => {
+            console.log(user);
+          })
+          .catch(error => {
+            console.log('Firebase failed to produce user credentials.');
+          });
+
         // await signInWithEmailAndPassword(auth, email, password).then(
         //   userCredential => {
         //     const {user} = userCredential;
@@ -67,7 +75,7 @@ export default function login() {
         //   },
         // );
         // alternative method with react-native-firebase/auth library
-        console.log('handleLoginFirebase produced no errors.');
+        console.log('Firebase produced user credentials.');
       } else {
         if (email === '' && password === '') {
           // replace with modal: feedback to user?
@@ -79,7 +87,7 @@ export default function login() {
         }
       }
     } catch (error) {
-      console.log('User Failed to Login', error);
+      console.log('User Failed to Log-in', error);
     }
   };
 
@@ -102,7 +110,7 @@ export default function login() {
       <View style={styles.imageView}>
         <Image
           style={styles.image}
-          source={require('../assets/images/taino_art.jpg')}
+          source={require('../assets/images/hummingbird_taino.jpg')}
           resizeMethod="scale"
           height={200}
           width={200}

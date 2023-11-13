@@ -7,8 +7,9 @@ import {
 } from 'firebase/auth';
 import {getFirestore} from 'firebase/firestore';
 import {getAnalytics} from 'firebase/analytics';
-import {default as FirebaseConfig} from '../constants/Firebase';
+import {default as FirebaseConfig} from '../constants/config/Firebase';
 import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
+import {BASE_URL} from '../constants/config/AndroidURL';
 
 // expo-constant?
 // firestore to store user data?
@@ -62,12 +63,11 @@ const firebaseConfig: firebaseconfig = {
 // most likely because the state is persisted: suspend error?
 const fireApp = initializeApp(firebaseConfig);
 
-
 export const auth = getAuth(fireApp);
 // initialize auth
 // export const auth = initializeAuth(fireApp, {
 //   persistence: getReactNativePersistence(ReactNativeAsyncStorage),
 // });
-connectAuthEmulator(auth, "http://10.0.2.2:9099");
+connectAuthEmulator(auth, BASE_URL);
 export const analytics = getAnalytics(fireApp);
 export const database = getFirestore(fireApp);
