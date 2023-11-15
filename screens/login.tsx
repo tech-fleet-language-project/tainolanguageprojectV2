@@ -13,14 +13,14 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
 } from 'react-native';
-import authNative from '../controllers/native-auth';
-import firebaseAuth from '../controllers/firebase-auth';
+import authNative from '../TLP_Server/controllers/native-auth';
+import firebaseAuth from '../TLP_Server/controllers/firebase-auth';
 import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   getAuth,
 } from 'firebase/auth';
-import {auth as firebaseInitialize} from '../controllers/firebase.init';
+import {auth as firebaseInitialize} from '../TLP_Server/controllers/firebase.init';
 // import auth from '@react-native-firebase/auth';
 
 /**

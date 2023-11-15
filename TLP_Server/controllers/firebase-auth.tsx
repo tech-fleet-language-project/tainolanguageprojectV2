@@ -1,3 +1,11 @@
+/**
+ * @format
+ * @param {string} email - email of user
+ * @param {string} password - password of user
+ * @returns {JSX.function}
+ * @class
+ */
+
 import React, {useCallback, useEffect, useState} from 'react';
 import {
   signInWithPopup,
@@ -18,8 +26,8 @@ import Alert from 'react-native';
 import {FirebaseError} from 'firebase/app';
 import next from 'next';
 
-// TODO: code may need to be 
-// TODO: use firebase admin library after creating server for app along with revise file structure
+// TODO: code may need to be normlized
+// TODO: use firebase admin library after creating server for app after revising file structure for server
 
 export default class firebaseAuth extends React.Component {
   // sign up new user

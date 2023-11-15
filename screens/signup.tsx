@@ -12,7 +12,7 @@ import {
   Platform,
   Keyboard,
 } from 'react-native';
-import firebaseAuth from '../controllers/firebase-auth';
+import firebaseAuth from '../TLP_Server/controllers/firebase-auth';
 
 /**
  * sign-up to the application
@@ -58,13 +58,14 @@ export default function signup() {
   const onSignup = async () => {
     try {
       if (email !== '' && password !== '') {
-        await firebase.handleSignupFirebase(email, password)
-        .then(user => {
-          console.log(user);
-        })
-        .catch(error => {
-          console.log('Firebase failed to produce user credentials.');
-        });
+        await firebase
+          .handleSignupFirebase(email, password)
+          .then(user => {
+            console.log(user);
+          })
+          .catch(error => {
+            console.log('Firebase failed to produce user credentials.');
+          });
       } else {
         // redirect to home screen?
       }

@@ -3,7 +3,7 @@ import express, {Router, Request, Response} from 'express';
 import {userProfile} from '../model/user-schema';
 import UserMongoDb from '../model/user'
 import {ObjectId, Collection} from 'mongodb';
-import {collections} from '../services/connect-db.service';
+import {collections} from '../../services/connect-db.service';
 
 type User = string;
 type Users = string[];

@@ -11,8 +11,8 @@ import {
   register,
   logout,
 } from 'react-native-app-auth';
-import {default as DiscoverDocument } from '../constants/config/Discovery_Document.json'
-import {default as ServiceAccount} from '../constants/config/Service_Account.json'
+import {default as DiscoverDocument} from '../config/Discovery_Document.json';
+import {default as ServiceAccount} from '../config/Service_Account.json';
 // type State = {
 //     hasLoggedInOnce: boolean,
 //     accessToken?: string,
@@ -41,7 +41,7 @@ const config: AuthConfiguration = {
   issuer: DiscoverDocument.issuer,
   clientId: ServiceAccount.client_id,
   redirectUrl: '',
-  scopes: ['openid', 'profile', 'email', 'offline_access'], // no offline_access for server version 
+  scopes: ['openid', 'profile', 'email', 'offline_access'], // no offline_access for server version
   additionalParameters: {},
   connectionTimeoutSeconds: 5,
   iosPrefersEphemeralSession: false,
@@ -58,10 +58,6 @@ const config: AuthConfiguration = {
 // clientId: 'GOOGLE_OAUTH_APP_GUID.apps.googleusercontent.com',
 // redirectUrl: 'com.googleusercontent.apps.GOOGLE_OAUTH_APP_GUID:/oauth2redirect/google', // needs to be configured in client's API Console
 
-
-
-
-
 const registerConfig: RegistrationConfiguration = {
   issuer: DiscoverDocument.issuer,
   redirectUrls: ['<YOUR_REDIRECT_URL>', '<YOUR_OTHER_REDIRECT_URL>'],
@@ -70,7 +66,7 @@ const registerConfig: RegistrationConfiguration = {
 type newAuthorizeResult = AuthorizeResult & {hasLoggedInOnce: boolean};
 
 // library or function or attribute or js technique to make immutable and persistent state
-// or maybe not, it may need to change on new request and is only needed once 
+// or maybe not, it may need to change on new request and is only needed once
 const resultAuth: newAuthorizeResult = {
   hasLoggedInOnce: false,
   accessToken: '',

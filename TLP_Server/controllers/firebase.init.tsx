@@ -7,9 +7,9 @@ import {
 } from 'firebase/auth';
 import {getFirestore} from 'firebase/firestore';
 import {getAnalytics} from 'firebase/analytics';
-import {default as FirebaseConfig} from '../constants/config/Firebase';
+import {default as FirebaseConfig} from '../config/Firebase';
 import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
-import {BASE_URL} from '../constants/config/AndroidURL';
+import {BASE_URL} from '../config/AndroidURL';
 
 // expo-constant?
 // firestore to store user data?

@@ -3,6 +3,8 @@
  * https://github.com/facebook/react-native
  *
  * @format
+ * @returns {JSX.Element}
+ * @function
  */
 
 import React from 'react';
@@ -24,6 +26,9 @@ import {
   LearnMoreLinks,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+import {NativeBaseProvider} from 'native-base';
+import { NavigationContainer, useNavigationContainerRef } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 
 import Signup from './screens/signup';
 import Login from './screens/login';
@@ -31,6 +36,8 @@ import Login from './screens/login';
 type SectionProps = PropsWithChildren<{
   title: string;
 }>;
+
+const authStack = createStackNavigator();
 
 function Section({children, title}: SectionProps): JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
@@ -61,9 +68,12 @@ function Section({children, title}: SectionProps): JSX.Element {
 function App(): JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
 
+
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
+
+  const navigationRef = useNavigationContainerRef();
 
   return (
     <SafeAreaView style={backgroundStyle}>
@@ -72,6 +82,26 @@ function App(): JSX.Element {
     </SafeAreaView>
   );
 }
+
+
+// user ? (
+// <NativeBaseProvider>
+//   <NavigationContainer ref={navigationRef} >
+//     <authStack.Navigator screenOptions={} >
+//       <authStack.Screen name='Login' component={Login} />
+//       <authStack.Screen name='Signup' component={Signup} />
+//       <authStack.Screen name='restPassword' component={restPassword} />
+//     </authStack.Navigator>
+//   </NavigationContainer>
+// </NativeBaseProvider>) : (
+//   <NativeBaseProvider>
+//   <PageProvider>
+//     <MainScreen />
+//     </PageProvider>
+//   </NativeBaseProvider>
+// )
+
+
 
 const styles = StyleSheet.create({
   sectionContainer: {
