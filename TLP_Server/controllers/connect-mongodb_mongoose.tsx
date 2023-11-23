@@ -2,6 +2,8 @@ const mongoose = require('mongoose');
 
 const { connect } = mongoose;
 
+// connect to MongoDB
+// TODO: research connection options
 export default async function connectMongoDB() {
   // TODO: update after creating MongoDB accounts
 	await mongoose

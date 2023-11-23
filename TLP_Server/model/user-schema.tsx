@@ -61,8 +61,9 @@ export const userProfile = model<IUser>('userProfile', user);
 // module.exports = userProfile;]
 
 
-// how do I make this function generic allowing for any argument of type schema 
-// normalize function in this file to bind, or assign, values to schema and pass to to other function to save to database also perform other functions i.e. delete, query, etc.
+// how do I make this function generic allowing for any argument of type schema: 
+// normalize function in this file to bind, or assign, values to schema and pass to to other function to save to database 
+// also perform other functions i.e. delete, query, etc.
 const handleDBSave = (user: IUser) => {
   try {
   const userprofile = new userProfile({

@@ -1,9 +1,11 @@
 import getAccessToken from './get-token';
-import {PROJECT_ID} from '../config/Firebase';
-import analyticsAccountId from '../config/Firebase';
+import {PROJECT_ID, default as FirebaseConfig} from '../config/Firebase';
+import analyticsAccountId from '../config/Firebase'
+
 
 const fetch = require('node-fetch');
 
+// programmatically add Google Analytics to project
 export default async function addGoogleAnalytics() {
   const accessToken = getAccessToken();
   const uri =
@@ -15,7 +17,7 @@ export default async function addGoogleAnalytics() {
     headers: {
       Authorization: `Bearer ${accessToken}`,
     },
-    // TODO: find analyticsAccountId
+    // TODO: find analyticsAccountId.. measurementId=analyticsAccountId???
     body: JSON.stringify({
       analyticsAccountId,
     }),

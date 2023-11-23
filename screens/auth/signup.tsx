@@ -12,7 +12,7 @@ import {
   Platform,
   Keyboard,
 } from 'react-native';
-import firebaseAuth from '../TLP_Server/controllers/firebase-auth';
+import firebaseAuth from '../../TLP_Server/controllers/firebase-auth';
 
 /**
  * sign-up to the application

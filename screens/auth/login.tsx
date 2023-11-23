@@ -13,14 +13,14 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
 } from 'react-native';
-import authNative from '../TLP_Server/controllers/native-auth';
-import firebaseAuth from '../TLP_Server/controllers/firebase-auth';
+import authNative from '../../TLP_Server/controllers/native-auth';
+import firebaseAuth from '../../TLP_Server/controllers/firebase-auth';
 import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   getAuth,
 } from 'firebase/auth';
-import {auth as firebaseInitialize} from '../TLP_Server/controllers/firebase.init';
+import {auth as firebaseInitialize} from '../../TLP_Server/controllers/firebase.init';
 // import auth from '@react-native-firebase/auth';
 
 /**
@@ -110,7 +110,7 @@ export default function login() {
       <View style={styles.imageView}>
         <Image
           style={styles.image}
-          source={require('../assets/images/hummingbird_taino.jpg')}
+          source={require('C:/Users/Owner/source/repos/tainolanguageprojectV2/assets/images/hummingbird_taino.jpg')}
           resizeMethod="scale"
           height={200}
           width={200}

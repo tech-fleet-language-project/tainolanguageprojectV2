@@ -32,8 +32,8 @@ export default class UserMongoDb {
 
 
 // schema validation on the database side
-// need to create instance of db
-// need to decide where this goes or who should implement
+// TODO: need to create instance of db
+// TODO: need to decide where this goes or who should implement
 // await db.command({
 //     'collMod': process.env.COLLECTION_NAME,
 //     'validator': {

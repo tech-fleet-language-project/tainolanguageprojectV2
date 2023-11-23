@@ -11,12 +11,13 @@ export const PROJECT_ID = "tainolanguageproject-b52be";
 // // For Firebase JavaScript SDK v7.20.0 and later, `measurementId` is an optional field
 // measurementId: "G-MEASUREMENT_ID",
 
-// TODO consider create a private key for googleapi
-// config parameters for Firebase initialization and functionality
+// TODO: consider create a private key for googleapi
+// TODO: config parameters for Firebase initialization and functionality
 export default {
   apiKey: "AIzaSyAOfOKHvd3KN_P198v0H9T6yROLWWLz-ac",
   authDomain: `${PROJECT_ID}.firebaseapp.com`,
   // the value of `databaseURL` depends on the location of the database
+  // if you decide to use FireStore or Google database option
   databaseURL: "https://DATABASE_NAME.firebaseio.com",
   projectId: PROJECT_ID,
   storageBucket: `${PROJECT_ID}.appspot.com`,
