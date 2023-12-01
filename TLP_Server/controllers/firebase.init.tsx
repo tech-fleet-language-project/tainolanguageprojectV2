@@ -30,15 +30,7 @@ type firebaseconfig = {
   measurementId: string;
 };
 
-// const firebaseConfig = {
-//   apiKey: "AIzaSyBLU4l8_y2dy_LUd8q5y6qQ_svYftcewsQ",
-//   authDomain: "tainolanguagueproject.firebaseapp.com",
-//   projectId: "tainolanguagueproject",
-//   storageBucket: "tainolanguagueproject.appspot.com",
-//   messagingSenderId: "266921452740",
-//   appId: "1:266921452740:web:fdcb7e79dce32337091591",
-//   measurementId: "G-K4W8CJHB9T"
-// };
+
 
 // manifest.extra
 // firebase config parameters

@@ -12,7 +12,7 @@ export const PROJECT_ID = "tainolanguageproject-b52be";
 // measurementId: "G-MEASUREMENT_ID",
 
 // TODO: consider create a private key for googleapi
-// TODO: config parameters for Firebase initialization and functionality
+// TODO: review and config parameters for Firebase initialization and functionality (database/storageBucket)
 export default {
   apiKey: "AIzaSyAOfOKHvd3KN_P198v0H9T6yROLWWLz-ac",
   authDomain: `${PROJECT_ID}.firebaseapp.com`,

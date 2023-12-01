@@ -11,7 +11,7 @@ type Users = string[];
 
 export const userRouter = express.Router;
 
-// where to establish connect to MongoDB?
+// TODO: where to establish connection to MongoDB?
 
 // consider body-parser library
 
@@ -22,6 +22,7 @@ export const userRouter = express.Router;
 // template and start of router to route them all one route to rule them all 
 userRouter.use(express.json());
 
+// convert to abstract class?? template router
 export default class UserRouter extends React.Component {
   handleGetAll = () => {
     return userRouter.get('/', async (req: Request, res: Response) => {
@@ -38,7 +39,7 @@ export default class UserRouter extends React.Component {
 
   handleGetByID = () => {
     return userRouter.get('/:id', async (req: Request, res: Response) => {
-        const id = req?.params?.id;
+        const id = req?.params.id;
         try {
             const query = {_id: new ObjectId(id)};
             const user = (await collections?.user.findOne()) as UserMongoDb;

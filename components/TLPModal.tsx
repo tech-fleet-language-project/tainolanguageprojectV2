@@ -29,18 +29,15 @@ export default function TLPModal (modalProps) {
 
   } = modalProps;
 
-  const [mobalVisible, setModalVisible] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
 
   return (
     <Modal
     style={styles.modalContainer}
     animationType = {animationType}
     visible = {visible}
-    onRequestClose = {onRequestClose => setModalVisible(!mobalVisible)}
+    onRequestClose = {onRequestClose => setModalVisible(!modalVisible)}
     transparent = {transparent}
-    
-   
-
     >
     </Modal>
     

@@ -40,7 +40,7 @@ import {default as ServiceAccount} from '../config/Service_Account.json';
 const config: AuthConfiguration = {
   issuer: DiscoverDocument.issuer,
   clientId: ServiceAccount.client_id,
-  redirectUrl: '',
+  redirectUrl: '', // TODO: create or find redirect url in Firebase or Google
   scopes: ['openid', 'profile', 'email', 'offline_access'], // no offline_access for server version
   additionalParameters: {},
   connectionTimeoutSeconds: 5,
@@ -53,7 +53,7 @@ const config: AuthConfiguration = {
     endSessionEndpoint: '',
   },
 };
-// serviceConfiguration configured to save on round trip or allow for discovery?
+// serviceConfiguration configured to save on round trip or allow for auto discovery?
 // issuer: 'https://accounts.google.com',
 // clientId: 'GOOGLE_OAUTH_APP_GUID.apps.googleusercontent.com',
 // redirectUrl: 'com.googleusercontent.apps.GOOGLE_OAUTH_APP_GUID:/oauth2redirect/google', // needs to be configured in client's API Console
@@ -128,7 +128,7 @@ React.useEffect(() => {
 
 // State is unnecessary because of AuthorizeResult - decide
 
-// pass only the parameter that the function needs: config***
+// pass only the parameters that the function needs: config***
 // object vs rest parameter
 // declaration merge or intersection?
 
@@ -196,7 +196,7 @@ export default class authNative extends React.Component {
       const resultLogOut = await logout(config, {
         idToken: resultAuth.idToken,
         postLogoutRedirectUrl:
-          'send user back to home if not done automatically conditional statement',
+          'privide url to send user back to home if not done automatically write conditional statement or statement '
       });
       console.log('User signed out');
     } catch (error) {

@@ -1,4 +1,4 @@
-// provides a degree of granular control when init and connecting to MongoDB
+// provides a degree of granular control with mongoose when init and connecting to MongoDB
 module.exports = {
   bufferCommands: false,
   bufferTimeoutMS: 500,

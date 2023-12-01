@@ -1,12 +1,14 @@
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import { Link, Tabs } from 'native-router-react';
+import { Link, NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Pressable, useColorScheme } from 'react-native';
 
-import Colors from '../../constants/Colors';
+import Colors from '../../../constants/Colors';
+import TabOneScreen from './index';
+import TabTwoScreen from './two';
 
-/**
- * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
- */
+const Tabs = createBottomTabNavigator();
+
 function TabBarIcon(props: {
   name: React.ComponentProps<typeof FontAwesome>['name'];
   color: string;
@@ -18,13 +20,15 @@ export default function TabLayout() {
   const colorScheme = useColorScheme();
 
 	return (
-		<Tabs
+    <NavigationContainer>
+		<Tabs.Navigator
 			screenOptions={{
 				tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
 			}}
 		>
       <Tabs.Screen
         name="index"
+        component={TabOneScreen}
         options={{
           title: 'Tab One',
           tabBarIcon: ({ color }) => {
@@ -32,7 +36,7 @@ export default function TabLayout() {
           },
           headerRight: () => {
             return (
-              <Link href="/modal" asChild>
+              <Link to={{screen: 'modal'}}>
                 <Pressable>
                   {({ pressed }) => {
                     return (
@@ -52,6 +56,7 @@ export default function TabLayout() {
       />
       <Tabs.Screen
         name="two"
+        component={TabTwoScreen}
         options={{
           title: 'Tab Two',
           tabBarIcon: ({ color }) => {
@@ -59,6 +64,7 @@ export default function TabLayout() {
           },
         }}
       />
-    </Tabs>
+    </Tabs.Navigator>
+    </NavigationContainer>
   );
 }

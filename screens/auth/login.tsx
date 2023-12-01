@@ -34,7 +34,7 @@ import {auth as firebaseInitialize} from '../../TLP_Server/controllers/firebase.
 // uninstall some of the dependencies in package.json
 // *** Dummy UI for login to test auth and possible template for login *** //
 
-export default function login() {
+export default function login(): JSX.Element {
   // redundant but I want to remind me of other way to implement type safety
 
   const firebase = new firebaseAuth({});
