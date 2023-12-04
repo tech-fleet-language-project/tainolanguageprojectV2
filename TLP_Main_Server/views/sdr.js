@@ -1,65 +1,43 @@
+//@ts-nocheck
 import React from 'react'
 import { View, ActivityIndicator } from 'react-native'
 import PropTypes from 'prop-types'
 import axios from 'axios'
-import { default } from '../config/Firebase';
 
 export const PROP_PREFIX = "prop::"
 export const FUNCTION_PREFIX = "function::"
 export const TEXT_PREFIX = "text::"
 
-
-interface IContext {
-    method: string,
-    baseURL?: string,
-    headers?: Object,
-    sdrTypes?: Object,
-}
-
-const APIContext = React.createContext<IContext>({
+const ApiContext = React.createContext({
     method: "get",
-    baseURL: "",
+    baseUrl: "",
     headers: {},
-    sdrTypes: {},
-   
+    sdrTypes: {}
 });
 
-interface IProp  {
-    client: keyof typeof APIContext,
-    children: React.ReactNode
-}
-
-interface IState  {
-    client: keyof typeof APIContext,
-    children: React.ReactNode
-}
-
-
-
-
-export class Provider extends React.Component<any, any> {
+export class Provider extends React.Component {
 
     render() {
         return (
-            <APIContext.Provider value={this.props.client} >
+            <ApiContext.Provider value={this.props.client}>
                 {this.props.children}
-            </APIContext.Provider>
+            </ApiContext.Provider>
         )
     }
 }
 
-export class SDRClient extends React.Component<any, any> {
+export class SDRClient extends React.Component {
 
     render() {
         return (
-            <APIContext.Consumer>
+            <ApiContext.Consumer>
                 {client => <SDRComponent {...this.props} client={client} />}
-            </APIContext.Consumer>
+            </ApiContext.Consumer>
         )
     }
 }
 
-class SDRComponent extends React.Component<any, any> {
+class SDRComponent extends React.Component {
 
     state = {
         loading: true,
@@ -75,7 +53,7 @@ class SDRComponent extends React.Component<any, any> {
         console.log(client);
         return axios({
             method: client.method,
-            url: this.appendEndpoint(client.baseURL, this.props.url),
+            url: this.appendEndpoint(client.baseUrl, this.props.url),
             headers: client.headers,
         })
             .then(res => this.setState({ sdrTemplate: res.data, loading: false }))
@@ -84,11 +62,11 @@ class SDRComponent extends React.Component<any, any> {
             })
     }
 
-    appendEndpoint(baseURL, endpoint) {
+    appendEndpoint(baseUrl, endpoint) {
         if (!endpoint) {
-            return baseURL
+            return baseUrl
         }
-        var url = baseURL
+        var url = baseUrl
         if (!url.endsWith("/")) {
             url += "/"
         }
@@ -117,7 +95,7 @@ class SDRComponent extends React.Component<any, any> {
 }
 
 
-export default class SDRContainer extends React.Component<any, any> {
+export default class SDRContainer extends React.Component {
 
     shouldComponentUpdate = this.props.shouldComponentUpdate
 
@@ -136,7 +114,7 @@ export default class SDRContainer extends React.Component<any, any> {
         if (!Array.isArray(node.children) || !node.children.length) {
             return React.createElement(sdrTypes[node.type], props, this.replaceText(node.children))
         }
-        const children: any = [];
+        const children = []
         for (var i = 0; i < node.children.length; i++) {
             children.push(this.buildChildren(node.children[i]))
         }
@@ -235,30 +213,22 @@ export default class SDRContainer extends React.Component<any, any> {
     }
 }
 
-interface IProvider extends Provider {
-    client: {
-        method: "get" | "put" | "post"
-        baseURL: string,
-        headers: Object
-        sdrTypes: Object
-    }
+Provider.propTypes = {
+    client: PropTypes.shape({
+        method: PropTypes.oneOf(["get", "put", "post"]).isRequired,
+        baseUrl: PropTypes.string.isRequired,
+        headers: PropTypes.object,
+        sdrTypes: PropTypes.object,
+    }).isRequired,
 }
 
-IProvider = {
-    client: {
+Provider.defaultProps = {
+    client: PropTypes.shape({
         method: "get",
-        baseURL: "",
+        baseUrl: "",
         headers: {},
-        sdrTypes: {}
-    },
-    
+    }).isRequired,
 }
-
-APIContext.defaultProps = {
-
-}
-
-
 
 
 SDRClient.propTypes = {

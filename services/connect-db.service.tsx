@@ -14,13 +14,14 @@ export async function connectToMongoDB (collection_name: string) {
     
     config();
 
+    //@ts-ignore
     const client: MongoClient = new MongoClient(process.env.DB_CONN_STRING);
 
     await client.connect();
 
     const mongoDB: Db = client.db(process.env.DB_NAME);
 
-    // TODO: add function for validator after being passed to this function 
+    // TODO: add function for validator after being passed to this function or let each collection manage it's own validation 
 
 
     const collection = mongoDB.collection(collection_name);

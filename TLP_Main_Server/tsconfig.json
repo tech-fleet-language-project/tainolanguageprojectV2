@@ -1,5 +1,5 @@
 {
-  "display": "tainolanguageprojectV2",
+  "display": "TLP_Main_Server",
   "_version": "1.0.0",
   "compilerOptions": {
     "target": "ES6",
@@ -35,7 +35,6 @@
       "@/*": ["./*"],
       "*": ["./*"],
       "tests": ["tests/*"],
-      "@components/*": ["./components/*"]
     }
   },
   "include": [
@@ -54,7 +53,6 @@
     "jest.config.js",
     "eslintrc.js",
     "prettierrc.js",
-    "rn-cli.config.js"
   ],
   "extends": "@tsconfig/react-native/tsconfig.json"
 }

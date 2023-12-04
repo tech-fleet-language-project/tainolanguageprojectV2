@@ -4,14 +4,15 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Pressable, useColorScheme } from 'react-native';
 
 import Colors from '../../../constants/Colors';
-import TabOneScreen from './index';
-import TabTwoScreen from './two';
+import TabOneScreen from './home';
+import TabTwoScreen from './lessons';
 
 const Tabs = createBottomTabNavigator();
 
 function TabBarIcon(props: {
   name: React.ComponentProps<typeof FontAwesome>['name'];
   color: string;
+  // icon?: string;
 }) {
   return <FontAwesome size={28} style={{ marginBottom: -3 }} {...props} />;
 }
@@ -27,10 +28,10 @@ export default function TabLayout() {
 			}}
 		>
       <Tabs.Screen
-        name="index"
+        name="home"
         component={TabOneScreen}
         options={{
-          title: 'Tab One',
+          title: 'Home',
           tabBarIcon: ({ color }) => {
             return <TabBarIcon name="code" color={color} />;
           },
@@ -55,10 +56,10 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="two"
+        name="lessons"
         component={TabTwoScreen}
         options={{
-          title: 'Tab Two',
+          title: 'Lessons',
           tabBarIcon: ({ color }) => {
             return <TabBarIcon name="code" color={color} />;
           },

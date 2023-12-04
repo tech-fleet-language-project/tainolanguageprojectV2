@@ -2,41 +2,65 @@ import React from 'react'
 import { View, ActivityIndicator } from 'react-native'
 import PropTypes from 'prop-types'
 import axios from 'axios'
+import { default as FirebaseConfig } from '../config/Firebase';
+import { default as Colors } from '../../../constants/Colors';
 
 export const PROP_PREFIX = "prop::"
 export const FUNCTION_PREFIX = "function::"
 export const TEXT_PREFIX = "text::"
 
-const ApiContext = React.createContext({
+
+interface IContext {
+    method: string,
+    baseURL?: string,
+    headers?: Object,
+    sdrTypes?: Object,
+}
+
+const APIContext = React.createContext<IContext>({
     method: "get",
-    baseUrl: "",
+    baseURL: "",
     headers: {},
-    sdrTypes: {}
+    sdrTypes: {},
+   
 });
 
-export class Provider extends React.Component {
+interface IProp  {
+    client: keyof typeof APIContext,
+    children: React.ReactNode
+}
+
+interface IState  {
+    client: keyof typeof APIContext,
+    children: React.ReactNode
+}
+
+
+
+
+export class Provider extends React.Component<any, any> {
 
     render() {
         return (
-            <ApiContext.Provider value={this.props.client}>
+            <APIContext.Provider value={this.props.client} >
                 {this.props.children}
-            </ApiContext.Provider>
+            </APIContext.Provider>
         )
     }
 }
 
-export class SDRClient extends React.Component {
+export class SDRClient extends React.Component<any, any> {
 
     render() {
         return (
-            <ApiContext.Consumer>
+            <APIContext.Consumer>
                 {client => <SDRComponent {...this.props} client={client} />}
-            </ApiContext.Consumer>
+            </APIContext.Consumer>
         )
     }
 }
 
-class SDRComponent extends React.Component {
+class SDRComponent extends React.Component<any, any> {
 
     state = {
         loading: true,
@@ -52,7 +76,7 @@ class SDRComponent extends React.Component {
         console.log(client);
         return axios({
             method: client.method,
-            url: this.appendEndpoint(client.baseUrl, this.props.url),
+            url: this.appendEndpoint(client.baseURL, this.props.url),
             headers: client.headers,
         })
             .then(res => this.setState({ sdrTemplate: res.data, loading: false }))
@@ -61,11 +85,11 @@ class SDRComponent extends React.Component {
             })
     }
 
-    appendEndpoint(baseUrl, endpoint) {
+    appendEndpoint(baseURL, endpoint) {
         if (!endpoint) {
-            return baseUrl
+            return baseURL
         }
-        var url = baseUrl
+        var url = baseURL
         if (!url.endsWith("/")) {
             url += "/"
         }
@@ -94,7 +118,7 @@ class SDRComponent extends React.Component {
 }
 
 
-export default class SDRContainer extends React.Component {
+export default class SDRContainer extends React.Component<any, any> {
 
     shouldComponentUpdate = this.props.shouldComponentUpdate
 
@@ -113,7 +137,7 @@ export default class SDRContainer extends React.Component {
         if (!Array.isArray(node.children) || !node.children.length) {
             return React.createElement(sdrTypes[node.type], props, this.replaceText(node.children))
         }
-        const children = []
+        const children: any = [];
         for (var i = 0; i < node.children.length; i++) {
             children.push(this.buildChildren(node.children[i]))
         }
@@ -164,7 +188,7 @@ export default class SDRContainer extends React.Component {
         }
         const parts = segments[0].split(".")
         const argsSegment = segments[1]
-        var func = this.props
+        var func: any = this.props
         for (let i = 0; i < parts.length && func; i++) {
             func = func[parts[i]]
         }
@@ -202,7 +226,8 @@ export default class SDRContainer extends React.Component {
                 element = element[parts[j]]
             }
             const shouldReplace = !!{ "string": true, "number": true, "boolean": true }[typeof element]
-            replaced = replaced.replace(matches[i], shouldReplace ? element : "")
+            //@ts-ignore
+            replaced = replaced.replace(matches[i], shouldReplace ? element : element)
         }
         return replaced
     }
@@ -212,22 +237,40 @@ export default class SDRContainer extends React.Component {
     }
 }
 
-Provider.propTypes = {
-    client: PropTypes.shape({
-        method: PropTypes.oneOf(["get", "put", "post"]).isRequired,
-        baseUrl: PropTypes.string.isRequired,
-        headers: PropTypes.object,
-        sdrTypes: PropTypes.object,
-    }).isRequired,
+// interface IProvider extends Provider {
+//     client: {
+//         method: "get" | "put" | "post"
+//         baseURL: string
+//         headers: Object
+//         sdrTypes: Object
+//     }
+// }
+
+// IProvider = {
+//     client: {
+//         method: "get",
+//         baseURL: "",
+//         headers: {},
+//         sdrTypes: {}
+//     }  
+// }
+
+const defaultProps = { 
+    client: {
+    method: "get" | "put" | "post",
+    baseURL: string,
+    headers: Object,
+    sdrTypes: Object,
+}
 }
 
-Provider.defaultProps = {
-    client: PropTypes.shape({
-        method: "get",
-        baseUrl: "",
-        headers: {},
-    }).isRequired,
+Provider.defaultProps = defaultProps;
+
+APIContext.defaultProps = {
+
 }
+
+
 
 
 SDRClient.propTypes = {

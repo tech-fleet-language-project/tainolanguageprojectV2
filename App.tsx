@@ -7,7 +7,7 @@
  * @function
  */
 
-import React from 'react';
+import React, {useEffect} from 'react';
 import type {PropsWithChildren} from 'react';
 import {
   SafeAreaView,
@@ -35,6 +35,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 
 import Signup from './screens/auth/signup';
 import Login from './screens/auth/login';
+import SplashScreen from 'react-native-splash-screen';
 
 type SectionProps = PropsWithChildren<{
   title: string;
@@ -77,6 +78,10 @@ function App(): JSX.Element {
 
   const navigationRef = useNavigationContainerRef();
 
+  // manage Splashscreen from here ??
+  useEffect(() => SplashScreen.hide(), [])
+
+  // render _layout.tsx in production ??
   return (
     <SafeAreaView style={backgroundStyle}>
       <Login />

@@ -2,13 +2,12 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {DarkTheme, DefaultTheme, ThemeProvider} from '@react-navigation/native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {SplashScreen, Stack} from 'expo-router';
+import SplashScreen from 'react-native-splash-screen';
 import {useEffect} from 'react';
 import {useColorScheme} from 'react-native';
 
 import ModalScreen from '../modal';
 import TabLayout from './(tabs)/_layout'
-
 
 // catch any errors thrown by the Layout component.
 import ErrorBoundary from '../errorboundary';
@@ -16,29 +15,32 @@ import ErrorBoundary from '../errorboundary';
 const Stack = createNativeStackNavigator();
 
 
-export const unstable_settings = {
-  // ensure that reloading on `/modal` keeps a back button present.
-  initialRouteName: '(tabs)',
-};
-
-// prevent the splash screen from auto-hiding before asset loading is complete.
-SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
+
+
+	// prevent the splash screen from auto-hiding before asset loading is complete.
+	// componentDidMount() {
+	// 	// load assets while splash screen is shown
+	// 	// afterwards (such as async tasks) hide the splash screen
+	// 	SplashScreen.hide();
+	// }
+
+  // useEffect(() => SplashScreen.hide())
 	
   const [loaded, error] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
     ...FontAwesome,
   });
 
-  // expo router uses Error Boundaries to catch errors in the navigation tree.
+  //  Error Boundaries to catch errors in the navigation tree.
   useEffect(() => {
     if (error) throw error;
   }, [error]);
 
   useEffect(() => {
     if (loaded) {
-      SplashScreen.hideAsync();
+      SplashScreen.show();
     }
   }, [loaded]);
 
@@ -46,7 +48,7 @@ export default function RootLayout() {
     return null;
   }
 
-  return <RootLayoutNav />;
+  return <ErrorBoundary><RootLayoutNav /></ErrorBoundary>;
 }
 
 function RootLayoutNav() {

@@ -42,9 +42,13 @@ var app = express();
 const mongoose = require('mongoose');
 const {MongoClient} = require('mongodb');
 
-// connect.then((db) => {
-//     console.log('Connected to db');
-// }, (err) => { console.log(err); })
+const connect = require('./controllers/connect-mongodb')
+
+// connect.catch(console.dir);
+
+connect.then(() => {
+    console.log('Connected to MongoDB');
+}, (error: any) => { console.log(error); })
 
 app.all('*', (req, res, next) => {
   if (req.secure) {
