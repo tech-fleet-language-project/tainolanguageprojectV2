@@ -5,11 +5,11 @@ module.exports = function (api) {
   return {
     presets: [
       ['@babel/preset-env', {targets: {node: 'current'}}],
-      '@babel/preset-typescript',
+      [['@babel/preset-react', {development: true}]],
       'module:metro-react-native-babel-preset',
+      '@babel/preset-typescript',
     ],
     plugins: [
-      [['@babel/preset-react', {development: true}]],
       [
         'module-resolver',
         {
