@@ -9,7 +9,7 @@ import {useColorScheme} from 'react-native';
 import ModalScreen from '../modal';
 import TabLayout from './(tabs)/_layout'
 
-// catch any errors thrown by the Layout component.
+// catch any errors thrown by the Root Layout component.
 import ErrorBoundary from '../errorboundary';
 
 const Stack = createNativeStackNavigator();
@@ -28,10 +28,13 @@ export default function RootLayout() {
 
   // useEffect(() => SplashScreen.hide())
 	
+  // use different hook and/or anything required by root or initial load
   const [loaded, error] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
     ...FontAwesome,
   });
+
+  
 
   //  Error Boundaries to catch errors in the navigation tree.
   useEffect(() => {
