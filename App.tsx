@@ -7,7 +7,7 @@
  * @function
  */
 
-import React from 'react';
+import React, {useEffect} from 'react';
 import type {PropsWithChildren} from 'react';
 import {
   SafeAreaView,
@@ -27,11 +27,15 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 import {NativeBaseProvider} from 'native-base';
-import { NavigationContainer, useNavigationContainerRef } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import {
+  NavigationContainer,
+  useNavigationContainerRef,
+} from '@react-navigation/native'
+import {createStackNavigator} from '@react-navigation/stack';
 
-import Signup from './screens/signup';
-import Login from './screens/login';
+import Signup from './screens/auth/signup';
+import Login from './screens/auth/login';
+import SplashScreen from 'react-native-splash-screen';
 
 type SectionProps = PropsWithChildren<{
   title: string;
@@ -68,13 +72,16 @@ function Section({children, title}: SectionProps): JSX.Element {
 function App(): JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
 
-
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
 
   const navigationRef = useNavigationContainerRef();
 
+  // manage Splashscreen from here ??
+  useEffect(() => SplashScreen.hide(), [])
+
+  // render _layout.tsx in production ??
   return (
     <SafeAreaView style={backgroundStyle}>
       <Login />
@@ -83,7 +90,9 @@ function App(): JSX.Element {
   );
 }
 
-
+// TODO: add global theme and config parameters to NativeBaseProvider
+// isSSR?? is probably only good for rendering websites with react
+// user or email as condition
 // user ? (
 // <NativeBaseProvider>
 //   <NavigationContainer ref={navigationRef} >
@@ -100,8 +109,6 @@ function App(): JSX.Element {
 //     </PageProvider>
 //   </NativeBaseProvider>
 // )
-
-
 
 const styles = StyleSheet.create({
   sectionContainer: {
