@@ -3,9 +3,11 @@
  * https://github.com/facebook/react-native
  *
  * @format
+ * @returns {JSX.Element}
+ * @function
  */
 
-import React from 'react';
+import React, {useEffect} from 'react';
 import type {PropsWithChildren} from 'react';
 import {
   SafeAreaView,
@@ -24,13 +26,22 @@ import {
   LearnMoreLinks,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+import {NativeBaseProvider} from 'native-base';
+import {
+  NavigationContainer,
+  useNavigationContainerRef,
+} from '@react-navigation/native'
+import {createStackNavigator} from '@react-navigation/stack';
 
-import Signup from './screens/signup';
-import Login from './screens/login';
+import Signup from './screens/auth/signup';
+import Login from './screens/auth/login';
+import SplashScreen from 'react-native-splash-screen';
 
 type SectionProps = PropsWithChildren<{
   title: string;
 }>;
+
+const authStack = createStackNavigator();
 
 function Section({children, title}: SectionProps): JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
@@ -65,6 +76,12 @@ function App(): JSX.Element {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
 
+  const navigationRef = useNavigationContainerRef();
+
+  // manage Splashscreen from here ??
+  useEffect(() => SplashScreen.hide(), [])
+
+  // render _layout.tsx in production ??
   return (
     <SafeAreaView style={backgroundStyle}>
       <Login />
@@ -72,6 +89,26 @@ function App(): JSX.Element {
     </SafeAreaView>
   );
 }
+
+// TODO: add global theme and config parameters to NativeBaseProvider
+// isSSR?? is probably only good for rendering websites with react
+// user or email as condition
+// user ? (
+// <NativeBaseProvider>
+//   <NavigationContainer ref={navigationRef} >
+//     <authStack.Navigator screenOptions={} >
+//       <authStack.Screen name='Login' component={Login} />
+//       <authStack.Screen name='Signup' component={Signup} />
+//       <authStack.Screen name='restPassword' component={restPassword} />
+//     </authStack.Navigator>
+//   </NavigationContainer>
+// </NativeBaseProvider>) : (
+//   <NativeBaseProvider>
+//   <PageProvider>
+//     <MainScreen />
+//     </PageProvider>
+//   </NativeBaseProvider>
+// )
 
 const styles = StyleSheet.create({
   sectionContainer: {
