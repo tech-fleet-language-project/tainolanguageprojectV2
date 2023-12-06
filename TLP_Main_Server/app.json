@@ -1,0 +1,24 @@
+
+{
+  "name": "TLP_Main_Server",
+  "slug": "TLP_Main_Server",
+  "displayName": "TLP_Main_Server",
+  "owner": "Tech Fleet",
+  "privacy": "private",
+  "description": "The Taino Language Project is a learning app to assist users in learning the Taino language.",
+  "version": "1.0.0",
+  "icon": "./assets/images/icon.png",
+  "scheme": "TLP_Main_Server",
+  "userInterfaceStyle": "automatic",
+  "splash": {
+    "image": "./assets/images/splash.png",
+    "resizeMode": "contain",
+    "backgroundColor": "#ffffff"
+  },
+  "assetBundlePatterns": ["**/*"],
+
+  "plugins": [""],
+  "experiments": {
+    "typedRoutes": true
+  }
+}
