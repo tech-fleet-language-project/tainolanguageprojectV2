@@ -3,8 +3,9 @@ import {DarkTheme, DefaultTheme, ThemeProvider} from '@react-navigation/native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import SplashScreen from 'react-native-splash-screen';
-import {useEffect} from 'react';
+import {useEffect, useState} from 'react';
 import {useColorScheme} from 'react-native';
+
 
 import ModalScreen from '../modal';
 import TabLayout from './(tabs)/_layout'
@@ -13,6 +14,16 @@ import TabLayout from './(tabs)/_layout'
 import ErrorBoundary from '../errorboundary';
 
 const Stack = createNativeStackNavigator();
+
+function useCustomLoad() {
+  const [loaded, setLoaded] = useState(false);
+  useEffect(() => require('../../assets/fonts/SpaceMono-Regular.ttf')
+  .then(() => setLoaded(true)), []);
+  return [loaded ? loaded : Error];
+  
+  
+}
+ 
 
 
 
@@ -29,11 +40,12 @@ export default function RootLayout() {
   // useEffect(() => SplashScreen.hide())
 	
   // use different hook and/or anything required by root or initial load
-  const [loaded, error] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
-    ...FontAwesome,
-  });
+  // const [loaded, error] = useFonts({
+  //   SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
+  //   ...FontAwesome,
+  // });
 
+  const [loaded, error] = useCustomLoad()
   
 
   //  Error Boundaries to catch errors in the navigation tree.

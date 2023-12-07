@@ -2,8 +2,9 @@
   "display": "TLP_Main_Server",
   "_version": "1.0.0",
   "compilerOptions": {
-    "target": "ES6",
-    "module": "commonjs",
+    // "target": "ESNext",
+    // "module": "CommonJS",
+    "types": ["react-native", "jest"],
     "allowJs": true,
     "checkJs": true,
     "jsx": "react-native",
@@ -13,8 +14,7 @@
     "strictNullChecks": true,
     "noImplicitThis": true,
     "alwaysStrict": true,
-    "moduleResolution": "node",
-    "baseUrl": "./",
+    "moduleResolution": "Node",
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
@@ -34,7 +34,7 @@
     "paths": {
       "@/*": ["./*"],
       "*": ["./*"],
-      "tests": ["tests/*"],
+      "tests": ["./_tests_/*"],
     }
   },
   "include": [
@@ -53,8 +53,7 @@
     "jest.config.js",
     "eslintrc.js",
     "prettierrc.js",
-  ],
-  "extends": "@tsconfig/react-native/tsconfig.json"
+  ]
 }
 
 // {
