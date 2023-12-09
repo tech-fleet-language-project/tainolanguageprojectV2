@@ -19,10 +19,12 @@
   "editor.formatOnSave": true,
   "cSpell.words": [
     "appspot",
+    "errorboundary",
     "firebaseapp",
     "firebaseconfig",
     "firestore",
     "Signup",
+    "tainolanguageproject",
     "tainolanguagueproject"
   ],
   "java.compile.nullAnalysis.mode": "automatic",

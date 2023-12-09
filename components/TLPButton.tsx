@@ -6,9 +6,13 @@ import {
   Button,
   TouchableOpacity,
   GestureResponderEvent,
+  DimensionValue,
+  TextStyle,
+  AccessibilityProps,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {default as Colors} from '../constants/Colors';
+import { ColorValue } from 'react-native';
 
 // materialUI
 // https://reactnative.dev/docs/accessibility#accessibility-actions
@@ -16,14 +20,14 @@ import {default as Colors} from '../constants/Colors';
 
 type buttonprops = {
   title: string;
-  titleColor?: string;
-  titleSize: number;
-  backgroundColor?: string;
-  width?: number;
-  accessibilityLabel: string;
+  titleColor?: TextStyle['color'];
+  titleSize: TextStyle['fontSize'];
+  backgroundColor?: ColorValue;
+  width?: DimensionValue;
+  accessibilityLabel: AccessibilityProps['accessibilityLabel'];
 };
 
-// onPress default should route to error message or default action?
+// onPress default should route to error message or default action or route to default screen?
 
 // const buttonProps: buttonprops = {
 //     title: '',
@@ -37,16 +41,18 @@ type buttonprops = {
 
 export default function StyledButton(
   buttonProps: buttonprops,
-  onPress: ((event: GestureResponderEvent) => void) | null | undefined,
+  onPress: ((event: GestureResponderEvent) => void | null | undefined),
   icon: any,
-) {
+  ...otherProps: any[]
+): JSX.Element {
+  const buttonProp = buttonProps;
   const {
-    title = buttonProps.title,
-    titleColor = buttonProps.titleColor,
-    titleSize = buttonProps.titleSize,
-    backgroundColor = buttonProps.backgroundColor,
-    width = buttonProps.width,
-    accessibilityLabel = buttonProps.accessibilityLabel,
+    title = buttonProp.title,
+    titleColor = buttonProp.titleColor,
+    titleSize = buttonProp.titleSize,
+    backgroundColor = buttonProp.backgroundColor,
+    width = buttonProp.width,
+    accessibilityLabel = buttonProp.accessibilityLabel,
   } = buttonProps;
 
   // const props = useMemo((buttonProps: buttonprops) => { return { title: buttonProps.title,
@@ -62,13 +68,20 @@ export default function StyledButton(
       onPress={onPress}
       style={[styles.buttonContainer, {backgroundColor, width}]}>
       <TouchableOpacity>
-        {icon ? (
+        {/* {icon ? (
           <Icon.Button
             name={icon}
             onPress={onPress}
             style={styles.buttonIcon}
+            
           />
-        ) : null}
+        ) : null} */}
+        {icon && <Icon.Button
+            name={icon}
+            onPress={onPress}
+            style={styles.buttonIcon}
+            
+          /> }
         <Text
           style={[styles.buttonText, {color: titleColor, fontSize: titleSize}]}>
           {title}
@@ -81,7 +94,7 @@ export default function StyledButton(
 {
   /* <Button title={title} color={backgroundColor}  /> */
 }
-// change based on style guide
+// change based on style guide along with styles below 
 StyledButton.defaultProps = {
   title: 'Button',
   titleColor: '#ffffff',

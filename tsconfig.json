@@ -2,8 +2,9 @@
   "display": "tainolanguageprojectV2",
   "_version": "1.0.0",
   "compilerOptions": {
-    "target": "ES6",
-    "module": "commonjs",
+    "target": "ES2022",
+    "module": "ES2022",
+    "types": ["react-native", "jest"],
     "allowJs": true,
     "checkJs": true,
     "jsx": "react-native",
@@ -14,7 +15,6 @@
     "noImplicitThis": true,
     "alwaysStrict": true,
     "moduleResolution": "node",
-    "baseUrl": "./",
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
@@ -34,7 +34,7 @@
     "paths": {
       "@/*": ["./*"],
       "*": ["./*"],
-      "tests": ["tests/*"],
+      "tests": ["./_tests_/*"],
       "@components/*": ["./components/*"]
     }
   },
@@ -46,7 +46,7 @@
     "**/*.ts",
     "**/*.tsx",
     "index.d.ts"
-  ],
+, "index.tsx"  ],
   "exclude": [
     "node_modules",
     "babel.config.js",
@@ -55,8 +55,7 @@
     "eslintrc.js",
     "prettierrc.js",
     "rn-cli.config.js"
-  ],
-  "extends": "@tsconfig/react-native/tsconfig.json"
+  ]
 }
 
 // {

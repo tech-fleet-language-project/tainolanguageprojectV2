@@ -181,10 +181,10 @@ const styles = StyleSheet.create({
 });
 
 // const Login = async () => {
-//     <KeyBoardAvodiingView style={styles.container}>
+//     <KeyBoardAvodingView style={styles.container}>
 //     <TextInput style={styles.input} />
 //     <TextInput style={styles.input} />
-//   </KeyBoardAvodiingView>
+//   </KeyBoardAvodingView>
 // }
 
 // export default Login;

@@ -7,7 +7,7 @@ const { connect } = mongoose;
 export default async function connectMongoDB() {
   // TODO: update after creating MongoDB accounts
 	await mongoose
-		.connect('mongodb://127.0.0.1:27017/test', {
+		.connect(process.env.DB_CONN_STRING, {
 			ssl: true,
 			sslValidate: false,
 		})
